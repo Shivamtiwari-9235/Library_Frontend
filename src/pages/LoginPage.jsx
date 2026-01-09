@@ -11,11 +11,14 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
+      console.log('[login] Sending login request', { url: '/api/auth/login', payload: form });
       const { data } = await authAPI.login(form);
+      console.log('[login] Response', data);
       localStorage.setItem('token', data.token);
       navigate('/dashboard');
     } catch (error) {
-      alert('Login failed: ' + (error.response?.data?.message || 'Try again'));
+      console.error('[login] Error response', error.response?.data || error.message || error);
+      alert('Login failed: ' + (error.response?.data?.message || error.message || 'Try again'));
     } finally {
       setLoading(false);
     }
